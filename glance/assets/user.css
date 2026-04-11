@@ -1,0 +1,22 @@
+/* Custom Glance styles - add your overrides here */
+
+.faye-li {
+  margin-left: auto;
+}
+
+.faye-btn {
+  color: var(--color-primary);
+  opacity: 0.4;
+  font-size: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+
+.faye-btn:hover {
+  opacity: 1;
+}
+
+.list-horizontal-text > li.min-width-0 a.block {
+  display: inline;
+}

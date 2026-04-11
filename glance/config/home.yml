@@ -1,0 +1,148 @@
+- name: Home
+  columns:
+    - size: small
+      widgets:
+        - type: calendar
+          first-day-of-week: monday
+
+        - type: rss
+          title: SRE & Platform
+          limit: 10
+          collapse-after: 3
+          cache: 12h
+          feeds:
+            - url: https://cloud.google.com/blog/rss
+              title: Google Cloud
+            - url: https://www.cncf.io/blog/feed/
+              title: CNCF Blog
+            - url: https://kubernetes.io/feed.xml
+              title: Kubernetes Blog
+            - url: https://prometheus.io/blog/feed.xml
+              title: Prometheus Blog
+            - url: https://istio.io/latest/blog/feed.xml
+              title: Istio Blog
+            - url: https://isovalent.com/blog/rss.xml
+              title: Isovalent (Cilium)
+
+        - type: rss
+          title: Go & Dev
+          limit: 8
+          collapse-after: 3
+          cache: 12h
+          feeds:
+            - url: https://go.dev/blog/feed.atom
+              title: Go Blog
+            - url: https://golangweekly.com/rss/
+              title: Golang Weekly
+            - url: https://selfh.st/rss/
+              title: selfh.st
+            - url: https://samwho.dev/rss.xml
+            - url: https://ciechanow.ski/atom.xml
+
+    - size: full
+      widgets:
+        - type: group
+          widgets:
+            - type: hacker-news
+            - type: lobsters
+
+        - type: videos
+          channels:
+            - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
+            - UCsBjURrPoezykLs9EqgamOA # Fireship
+            - UCZgt6AzoyjslHTC9dz0UoTw # eBPF Summit / Isovalent
+            - UC4MBLgKJoJGBIlSg0JhXBGA # Rawkode Academy (K8s/DevOps)
+            - UC9x0AN7BWHpCDHSm9NiJFJQ # NetworkChuck
+
+        - type: rss
+          title: Podcasts
+          limit: 10
+          collapse-after: 3
+          cache: 12h
+          feeds:
+            - url: https://anchor.fm/s/59759320/podcast/rss
+              title: Vida com IA
+            - url: https://allinchamathjason.libsyn.com/rss
+              title: All-In
+            - url: https://feeds.transistor.fm/acquired
+              title: Acquired
+            - url: https://lexfridman.com/feed/podcast/
+              title: Lex Fridman
+            - url: https://feeds.megaphone.fm/darknetdiaries
+              title: Darknet Diaries
+            - url: https://feeds.megaphone.fm/APPI6857213837
+              title: Flagrant
+            - url: https://feeds.megaphone.fm/killtony
+              title: Kill Tony
+            - url: https://feeds.megaphone.fm/thispastweekend
+              title: Theo Von
+            - url: https://feeds.megaphone.fm/YMH5847489315
+              title: Your Mom's House
+
+        - type: group
+          widgets:
+            - type: reddit
+              subreddit: kubernetes
+              show-thumbnails: true
+            - type: reddit
+              subreddit: selfhosted
+              show-thumbnails: true
+
+    - size: small
+      widgets:
+        - type: weather
+          location: São Paulo, Brazil
+          units: metric
+          hour-format: 24h
+
+        - type: weather
+          location: Rio de Janeiro, Brazil
+          units: metric
+          hour-format: 24h
+
+        - type: markets
+          markets:
+            - symbol: SPY
+              name: S&P 500
+              chart-link: https://finance.yahoo.com/quote/SPY
+            - symbol: BTC-USD
+              name: Bitcoin
+              chart-link: https://finance.yahoo.com/quote/BTC-USD
+            - symbol: "USDBRL=X"
+              name: USD/BRL
+              chart-link: https://finance.yahoo.com/quote/USDBRL=X
+            - symbol: TSM
+              name: TSMC
+              chart-link: https://finance.yahoo.com/quote/TSM
+            - symbol: ASML
+              name: ASML
+              chart-link: https://finance.yahoo.com/quote/ASML
+            - symbol: GOOGL
+              name: Google
+              chart-link: https://finance.yahoo.com/quote/GOOGL
+            - symbol: MSFT
+              name: Microsoft
+              chart-link: https://finance.yahoo.com/quote/MSFT
+
+        - type: releases
+          title: Releases
+          cache: 1d
+          token: ${GITHUB_TOKEN}
+          repositories:
+            - kubernetes/kubernetes
+            - argoproj/argo-cd
+            - istio/istio
+            - cilium/cilium
+            - prometheus/prometheus
+            - glanceapp/glance
+            - derailed/k9s
+            - helm/helm
+
+        - type: docker-containers
+
+        - type: monitor
+          title: Services
+          cache: 5m
+          sites:
+            - title: Glance
+              url: http://localhost:8080
