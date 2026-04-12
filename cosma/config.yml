@@ -1,0 +1,23 @@
+select_origin: directory
+files_origin: /data/notes
+nodes_origin: /data/notes
+record_types:
+  undefined:
+    fill: "#6c757d"
+    stroke: "#6c757d"
+link_types:
+  undefined:
+    stroke: "#6c757d"
+    dashInterval: null
+record_metas:
+  - tags
+title: "Arthur's Knowledge Graph"
+description: "Cosma visualization of ~/notes/"
+views: {}
+focus_max: 2
+graph_background_color: "#1a1a2e"
+graph_highlight_color: "#e94560"
+graph_highlight_on_hover: true
+graph_text_size: 10
+graph_arrows: true
+minify: false
