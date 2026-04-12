@@ -7,7 +7,7 @@ Self-hosted services running on the home PC (Arch Linux, Ryzen 9 5900X).
 | Service | Port | Description | Dir |
 |---------|------|-------------|-----|
 | [Glance](https://github.com/glanceapp/glance) | 8080 | Dashboard — RSS, HN, YouTube, markets, releases, weather | `glance/` |
-| [Cosma](https://github.com/graphlab-fr/cosma) | 9102 | Knowledge graph visualization for ~/notes/ | `cosma/` |
+| [Quartz](https://github.com/jackyzha0/quartz) | 8082 | Knowledge base — notes with graph view, search, tags | `quartz/` |
 
 ## Quick Start
 

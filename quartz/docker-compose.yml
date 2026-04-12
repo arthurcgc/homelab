@@ -1,0 +1,9 @@
+services:
+  quartz:
+    build: .
+    container_name: quartz
+    ports:
+      - "8082:8082"
+    volumes:
+      - ${HOME}/notes:/usr/src/app/content:ro
+    restart: unless-stopped
