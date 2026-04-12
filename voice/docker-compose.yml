@@ -1,0 +1,34 @@
+services:
+  whisper:
+    build:
+      context: ./whisper
+    container_name: faye-whisper
+    devices:
+      - /dev/dri:/dev/dri
+    volumes:
+      - ${HOME}/Documents/faye/models/whisper:/models:ro
+    ports:
+      - "9100:9100"
+    command:
+      - "--model"
+      - "/models/ggml-small.en.bin"
+      - "--host"
+      - "0.0.0.0"
+      - "--port"
+      - "9100"
+      - "--convert"
+    restart: unless-stopped
+
+  kokoro:
+    build:
+      context: ./kokoro
+    container_name: faye-kokoro
+    ports:
+      - "9101:9101"
+    command:
+      - "--port"
+      - "9101"
+      - "--voice"
+      - "af_heart"
+    restart: unless-stopped
+

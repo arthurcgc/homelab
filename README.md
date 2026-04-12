@@ -8,6 +8,8 @@ Self-hosted services running on the home PC (Arch Linux, Ryzen 9 5900X).
 |---------|------|-------------|-----|
 | [Glance](https://github.com/glanceapp/glance) | 8080 | Dashboard — RSS, HN, YouTube, markets, releases, weather | `glance/` |
 | [Quartz](https://github.com/jackyzha0/quartz) | 8082 | Knowledge base — notes with graph view, search, tags | `quartz/` |
+| [whisper.cpp](https://github.com/ggml-org/whisper.cpp) | 9100 | Speech-to-text (Vulkan GPU) | `voice/whisper/` |
+| [Kokoro](https://github.com/thewh1teagle/kokoro-onnx) | 9101 | Text-to-speech (CPU/ONNX) | `voice/kokoro/` |
 
 ## Quick Start
 
