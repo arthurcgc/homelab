@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pichau</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, system-ui, sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 3rem 1.5rem;
+    }
+    .container { max-width: 600px; width: 100%; }
+    h1 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #00ff88;
+      margin-bottom: 2rem;
+    }
+    .group { margin-bottom: 2rem; }
+    .group-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #666;
+      margin-bottom: 0.75rem;
+    }
+    .services { display: flex; flex-direction: column; gap: 0.5rem; }
+    .service {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      background: #141414;
+      border: 1px solid #222;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #e0e0e0;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    a.service:hover {
+      border-color: #00ff88;
+      background: #1a1a1a;
+      cursor: pointer;
+    }
+    div.service:hover {
+      border-color: #555;
+    }
+    .service-name { font-weight: 500; }
+    .service-desc {
+      font-size: 0.8rem;
+      color: #666;
+    }
+    .service-path {
+      font-size: 0.75rem;
+      color: #444;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>pichau.local</h1>
+
+    <div class="group">
+      <div class="group-title">Dashboard</div>
+      <div class="services">
+        <a class="service" href="/glance/">
+          <div>
+            <div class="service-name">Glance</div>
+            <div class="service-desc">Feeds, markets, videos</div>
+          </div>
+          <div class="service-path">/glance</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-title">Apps</div>
+      <div class="services">
+        <a class="service" href="/paperless/">
+          <div>
+            <div class="service-name">Paperless-ngx</div>
+            <div class="service-desc">Document management</div>
+          </div>
+          <div class="service-path">/paperless</div>
+        </a>
+        <a class="service" href="/quartz/">
+          <div>
+            <div class="service-name">Quartz</div>
+            <div class="service-desc">Knowledge base</div>
+          </div>
+          <div class="service-path">/quartz</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-title">Monitoring</div>
+      <div class="services">
+        <a class="service" href="/glances/">
+          <div>
+            <div class="service-name">Glances</div>
+            <div class="service-desc">System monitor</div>
+          </div>
+          <div class="service-path">/glances</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-title">Voice (Faye)</div>
+      <div class="services">
+        <div class="service">
+          <div>
+            <div class="service-name">Whisper</div>
+            <div class="service-desc">Speech-to-text (API)</div>
+          </div>
+          <div class="service-path">:9100</div>
+        </div>
+        <div class="service">
+          <div>
+            <div class="service-name">Kokoro</div>
+            <div class="service-desc">Text-to-speech (API)</div>
+          </div>
+          <div class="service-path">:9101</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -3,6 +3,7 @@ document:
     <script src="/assets/faye.js" defer></script>
 
 server:
+  base-url: /glance
   assets-path: /app/assets
 
 theme:
