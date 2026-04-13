@@ -19,6 +19,7 @@ Each service lives in its own directory with a `docker-compose.yml`. There is no
 | Quartz (knowledge base) | `quartz/` | 8082 | Built from source (Node 22 + Quartz v4) |
 | whisper.cpp (STT) | `voice/whisper/` | 9100 | Built from source (C++ with Vulkan) |
 | Kokoro (TTS) | `voice/kokoro/` | 9101 | Built from source (Python 3.12 + kokoro-onnx) |
+| Paperless-ngx (documents) | `paperless/` | 8000 | `ghcr.io/paperless-ngx/paperless-ngx` (upstream) + Redis |
 
 The voice services (whisper + kokoro) share a single `voice/docker-compose.yml` and are used by the [Faye assistant](~/Documents/faye) project. Whisper requires GPU passthrough (`/dev/dri`) for Vulkan acceleration on the RX 7800 XT. Kokoro runs CPU-only.
 

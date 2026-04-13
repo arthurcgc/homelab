@@ -13,6 +13,7 @@ Reachable on LAN at `pichau.local` via Avahi/mDNS.
 | [Quartz](#quartz) | 8082 | `quartz/` |
 | [whisper.cpp](#whispercpp--speech-to-text) | 9100 | `voice/whisper/` |
 | [Kokoro](#kokoro--text-to-speech) | 9101 | `voice/kokoro/` |
+| [Paperless-ngx](#paperless-ngx) | 8000 | `paperless/` |
 
 ## Glance
 
@@ -101,6 +102,24 @@ curl -X POST http://localhost:9101/tts \
   -d '{"text": "Hello world"}' -o test.wav
 ```
 
+## Paperless-ngx
+
+Document management system for personal documents — IDs, certificates, tax docs. OCR, auto-tagging, full-text search. Drop files into `consume/` for auto-import.
+
+- **Image:** `ghcr.io/paperless-ngx/paperless-ngx:latest` (upstream)
+- **Port:** 8000
+- **Database:** SQLite (internal)
+- **Broker:** Redis 8 (container: `paperless-broker`)
+- **OCR:** Portuguese + English
+- **Secrets:** `paperless/.env` — `PAPERLESS_SECRET_KEY` (template in `.env.example`)
+
+```bash
+cd paperless && docker compose up -d
+# Create admin user on first run:
+docker exec -it paperless python3 manage.py createsuperuser
+# Open http://pichau.local:8000
+```
+
 ## Quick Reference
 
 ```bash
@@ -109,9 +128,10 @@ cd glance && docker compose up -d
 cd ../glances && docker compose up -d
 cd ../quartz && docker compose up -d
 cd ../voice && docker compose up -d
+cd ../paperless && docker compose up -d
 
 # Stop everything
-docker stop glance glances quartz faye-whisper faye-kokoro
+docker stop glance glances quartz faye-whisper faye-kokoro paperless paperless-broker
 
 # Check what's running
 docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
