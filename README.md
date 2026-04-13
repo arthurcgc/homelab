@@ -2,18 +2,33 @@
 
 Self-hosted services running on the home PC (Arch Linux, Ryzen 9 5900X, 32GB RAM, dual AMD GPUs).
 
-Reachable on LAN at `pichau.local` via Avahi/mDNS.
+Reachable on LAN at `http://pichau` (nginx reverse proxy on port 80). Landing page links to all services.
 
 ## Services
 
-| Service | Port | Dir |
-|---------|------|-----|
-| [Glance](#glance) | 8080 | `glance/` |
-| [Glances](#glances) | 61208 | `glances/` |
-| [Quartz](#quartz) | 8082 | `quartz/` |
-| [whisper.cpp](#whispercpp--speech-to-text) | 9100 | `voice/whisper/` |
-| [Kokoro](#kokoro--text-to-speech) | 9101 | `voice/kokoro/` |
-| [Paperless-ngx](#paperless-ngx) | 8000 | `paperless/` |
+| Service | Path | Port | Dir |
+|---------|------|------|-----|
+| [Nginx](#nginx) | `/` | 80 | `nginx/` |
+| [Glance](#glance) | `/glance/` | 8080 | `glance/` |
+| [Glances](#glances) | `/glances/` | 61208 | `glances/` |
+| [Quartz](#quartz) | `/quartz/` | 8082 | `quartz/` |
+| [whisper.cpp](#whispercpp--speech-to-text) | — | 9100 | `voice/whisper/` |
+| [Kokoro](#kokoro--text-to-speech) | — | 9101 | `voice/kokoro/` |
+| [Paperless-ngx](#paperless-ngx) | `/paperless/` | 8000 | `paperless/` |
+
+## Nginx
+
+Reverse proxy and landing page. Routes all services under a single port (80) with path-based routing. Static HTML landing page at `/` with links to every service.
+
+- **Image:** `nginx:alpine` (upstream)
+- **Port:** 80 (`network_mode: host`)
+- **Config:** `nginx/nginx.conf`
+- **Landing page:** `nginx/index.html`
+
+```bash
+cd nginx && docker compose up -d
+# Open http://pichau
+```
 
 ## Glance
 
@@ -124,14 +139,15 @@ docker exec -it paperless python3 manage.py createsuperuser
 
 ```bash
 # Start everything
-cd glance && docker compose up -d
+cd nginx && docker compose up -d
+cd ../glance && docker compose up -d
 cd ../glances && docker compose up -d
 cd ../quartz && docker compose up -d
 cd ../voice && docker compose up -d
 cd ../paperless && docker compose up -d
 
 # Stop everything
-docker stop glance glances quartz faye-whisper faye-kokoro paperless paperless-broker
+docker stop nginx glance glances quartz faye-whisper faye-kokoro paperless paperless-broker
 
 # Check what's running
 docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"

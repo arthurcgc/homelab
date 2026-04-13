@@ -4,22 +4,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A Docker Compose homelab — self-hosted services running on an Arch Linux PC (Ryzen 9 5900X, 32GB RAM, RX 7800 XT + second AMD GPU). Reachable on LAN at `pichau.local` via Avahi/mDNS.
+A Docker Compose homelab — self-hosted services running on an Arch Linux PC (Ryzen 9 5900X, 32GB RAM, RX 7800 XT + second AMD GPU). Reachable on LAN at `http://pichau` (nginx reverse proxy on port 80). Also accessible via `pichau.local` (mDNS) from Linux/macOS.
 
 There is no build system, test suite, or linter. The repo is pure infrastructure config: Docker Compose files, Dockerfiles, config YAML, and one Python server.
 
 ## Architecture
 
-Each service lives in its own directory with a `docker-compose.yml`. There is no top-level compose file — services are started independently.
+Nginx reverse proxy (`nginx/`) on port 80 routes to all services. Each service also has its own directory with a `docker-compose.yml` — services are started independently.
 
-| Service | Dir | Port | Image |
-|---------|-----|------|-------|
-| Glance (dashboard) | `glance/` | 8080 | `glanceapp/glance` (upstream) |
-| Glances (system monitor) | `glances/` | 61208 | `nicolargo/glances:latest-full` (upstream) |
-| Quartz (knowledge base) | `quartz/` | 8082 | Built from source (Node 22 + Quartz v4) |
-| whisper.cpp (STT) | `voice/whisper/` | 9100 | Built from source (C++ with Vulkan) |
-| Kokoro (TTS) | `voice/kokoro/` | 9101 | Built from source (Python 3.12 + kokoro-onnx) |
-| Paperless-ngx (documents) | `paperless/` | 8000 | `ghcr.io/paperless-ngx/paperless-ngx` (upstream) + Redis |
+| Service | Dir | Path | Port | Image |
+|---------|-----|------|------|-------|
+| Nginx (reverse proxy) | `nginx/` | `/` | 80 | `nginx:alpine` (upstream) |
+| Glance (dashboard) | `glance/` | `/glance/` | 8080 | `glanceapp/glance` (upstream) |
+| Glances (system monitor) | `glances/` | `/glances/` | 61208 | `nicolargo/glances:latest-full` (upstream) |
+| Quartz (knowledge base) | `quartz/` | `/quartz/` | 8082 | Built from source (Node 22 + Quartz v4) |
+| whisper.cpp (STT) | `voice/whisper/` | — | 9100 | Built from source (C++ with Vulkan) |
+| Kokoro (TTS) | `voice/kokoro/` | — | 9101 | Built from source (Python 3.12 + kokoro-onnx) |
+| Paperless-ngx (documents) | `paperless/` | `/paperless/` | 8000 | `ghcr.io/paperless-ngx/paperless-ngx` (upstream) + Redis |
 
 The voice services (whisper + kokoro) share a single `voice/docker-compose.yml` and are used by the [Faye assistant](~/Documents/faye) project. Whisper requires GPU passthrough (`/dev/dri`) for Vulkan acceleration on the RX 7800 XT. Kokoro runs CPU-only.
 
@@ -28,6 +29,9 @@ Quartz mounts `~/notes/` read-only and hot-reloads when notes change. Whisper mo
 ## Common commands
 
 ```bash
+# Start nginx (landing page + reverse proxy)
+cd nginx && docker compose up -d
+
 # Start a service
 cd glance && docker compose up -d
 cd quartz && docker compose up -d
@@ -38,13 +42,14 @@ cd voice && docker compose up -d whisper  # just one
 cd voice && docker compose up -d --build
 
 # Logs
+docker logs -f nginx
 docker logs -f glance
 docker logs -f faye-whisper
 docker logs -f faye-kokoro
 docker logs -f quartz
 
 # Stop everything
-docker stop glance quartz faye-whisper faye-kokoro
+docker stop nginx glance quartz faye-whisper faye-kokoro
 ```
 
 ## Secrets
