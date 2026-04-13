@@ -35,6 +35,35 @@ function injectFayeButtons() {
   }
 }
 
+function createRefreshButton() {
+  const btn = document.createElement("button");
+  btn.className = "widget-refresh-btn";
+  btn.title = "Refresh";
+  btn.innerHTML = "&#x21bb;";
+  btn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    btn.classList.add("spinning");
+    try {
+      const resp = await fetch(`${pageData.baseURL}/api/pages/${pageData.slug}/content/`);
+      await resp.text();
+    } catch (_) {}
+    location.reload();
+  });
+  return btn;
+}
+
+function injectRefreshButtons() {
+  const headers = document.querySelectorAll(".widget-header");
+  for (const header of headers) {
+    if (header.querySelector(".widget-refresh-btn")) continue;
+    header.style.position = "relative";
+    header.appendChild(createRefreshButton());
+  }
+}
+
 // widgets load async, so observe DOM changes
-const observer = new MutationObserver(() => injectFayeButtons());
+const observer = new MutationObserver(() => {
+  injectFayeButtons();
+  injectRefreshButtons();
+});
 observer.observe(document.body, { childList: true, subtree: true });

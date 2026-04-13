@@ -11,7 +11,7 @@
           collapse-after: 3
           cache: 12h
           feeds:
-            - url: https://cloud.google.com/blog/rss
+            - url: https://blog.google/products/google-cloud/rss/
               title: Google Cloud
             - url: https://www.cncf.io/blog/feed/
               title: CNCF Blog
@@ -51,7 +51,7 @@
             - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
             - UCsBjURrPoezykLs9EqgamOA # Fireship
             - UCZgt6AzoyjslHTC9dz0UoTw # eBPF Summit / Isovalent
-            - UC4MBLgKJoJGBIlSg0JhXBGA # Rawkode Academy (K8s/DevOps)
+            - UCrber_mFvp_FEF7D9u8PDEA # Rawkode Academy (K8s/DevOps)
             - UC9x0AN7BWHpCDHSm9NiJFJQ # NetworkChuck
 
         - type: rss
