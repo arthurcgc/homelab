@@ -11,12 +11,16 @@ services:
       - "9100:9100"
     command:
       - "--model"
-      - "/models/ggml-small.en.bin"
+      - "/models/ggml-small.bin"
       - "--host"
       - "0.0.0.0"
       - "--port"
       - "9100"
       - "--convert"
+      - "--language"
+      - "auto"
+      - "--inference-path"
+      - "/v1/audio/transcriptions"
     restart: unless-stopped
 
   kokoro:
