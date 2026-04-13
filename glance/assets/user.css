@@ -20,37 +20,3 @@
 .list-horizontal-text > li.min-width-0 a.block {
   display: inline;
 }
-
-.widget-refresh-btn {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: var(--color-text-subdue);
-  font-size: 1.6rem;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.15s, color 0.15s;
-  padding: 0.4rem;
-  line-height: 1;
-}
-
-.widget-header:hover .widget-refresh-btn {
-  opacity: 0.6;
-}
-
-.widget-refresh-btn:hover {
-  opacity: 1 !important;
-  color: var(--color-primary);
-}
-
-@keyframes spin {
-  to { transform: translateY(-50%) rotate(360deg); }
-}
-
-.widget-refresh-btn.spinning {
-  opacity: 1;
-  animation: spin 0.6s linear infinite;
-}
