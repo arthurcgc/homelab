@@ -9,6 +9,7 @@ Reachable on LAN at `pichau.local` via Avahi/mDNS.
 | Service | Port | Dir |
 |---------|------|-----|
 | [Glance](#glance) | 8080 | `glance/` |
+| [Glances](#glances) | 61208 | `glances/` |
 | [Quartz](#quartz) | 8082 | `quartz/` |
 | [whisper.cpp](#whispercpp--speech-to-text) | 9100 | `voice/whisper/` |
 | [Kokoro](#kokoro--text-to-speech) | 9101 | `voice/kokoro/` |
@@ -25,6 +26,19 @@ Dashboard aggregating RSS feeds, Hacker News, YouTube, Reddit, GitHub releases, 
 
 ```bash
 cd glance && docker compose up -d
+```
+
+## Glances
+
+Real-time system monitoring dashboard (CPU, memory, disk, network, containers, processes). Exposes a web UI and REST API.
+
+- **Image:** `nicolargo/glances:latest-full` (upstream)
+- **Port:** 61208 (`network_mode: host`)
+- **Access:** Full host visibility via `pid: host`, root filesystem mounted read-only, Docker socket for container monitoring
+
+```bash
+cd glances && docker compose up -d
+# Open http://localhost:61208
 ```
 
 ## Quartz
@@ -92,11 +106,12 @@ curl -X POST http://localhost:9101/tts \
 ```bash
 # Start everything
 cd glance && docker compose up -d
+cd ../glances && docker compose up -d
 cd ../quartz && docker compose up -d
 cd ../voice && docker compose up -d
 
 # Stop everything
-docker stop glance quartz faye-whisper faye-kokoro
+docker stop glance glances quartz faye-whisper faye-kokoro
 
 # Check what's running
 docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"

@@ -6,4 +6,5 @@ services:
       - "8082:8082"
     volumes:
       - ${HOME}/notes:/usr/src/app/content:ro
+      - ${HOME}/Documents/faye/docs:${HOME}/Documents/faye/docs:ro
     restart: unless-stopped
