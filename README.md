@@ -79,16 +79,16 @@ Transcribes audio to text using OpenAI's Whisper model, compiled with Vulkan for
 - **Image:** Built from source (multi-stage: C++ build with Vulkan → runtime with RADV + ffmpeg)
 - **Port:** 9100
 - **GPU:** RX 7800 XT via Vulkan (`/dev/dri` passthrough)
-- **Model:** `ggml-small.en.bin` (~460MB, English) — mounted from `~/Documents/faye/models/whisper/`
-- **API:** `POST /inference` (multipart form: `file` + `response_format=json`)
-- **Latency:** ~1-2s for a typical voice command
+- **Model:** `ggml-large-v3.bin` (~2.9GB, multilingual, auto-detects language) — mounted from `~/Documents/faye/models/whisper/`
+- **API:** `POST /v1/audio/transcriptions` (OpenAI-compatible, multipart form: `file` + `response_format=json`)
+- **Consumers:** Faye's voice client (PC mic) + OpenClaw audio pipeline (WhatsApp voice notes)
 
 ```bash
 cd voice && docker compose up -d whisper
 
 # Test
-curl -X POST http://localhost:9100/inference \
-  -F "file=@test.wav" -F "response_format=json"
+curl -X POST http://localhost:9100/v1/audio/transcriptions \
+  -F "file=@test.ogg" -F "response_format=json"
 ```
 
 ## Kokoro — Text-to-Speech
