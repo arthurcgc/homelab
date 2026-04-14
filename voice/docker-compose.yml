@@ -11,7 +11,7 @@ services:
       - "9100:9100"
     command:
       - "--model"
-      - "/models/ggml-small.bin"
+      - "/models/ggml-large-v3.bin"
       - "--host"
       - "0.0.0.0"
       - "--port"
