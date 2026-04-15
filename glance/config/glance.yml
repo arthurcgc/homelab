@@ -1,6 +1,6 @@
 document:
   head: |
-    <script src="/assets/faye.js" defer></script>
+    <script src="/glance/assets/faye.js" defer></script>
 
 server:
   base-url: /glance
