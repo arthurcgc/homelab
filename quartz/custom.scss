@@ -1,0 +1,196 @@
+@use "./base.scss";
+
+// --- Explorer: hide the desktop "Explorer" toggle header ---
+button.desktop-explorer {
+  display: none !important;
+}
+
+.explorer {
+  &.collapsed {
+    flex: 0 1 auto;
+
+    .fold {
+      transform: none;
+    }
+  }
+}
+
+// --- Explorer: bigger text, more breathing room ---
+.explorer-content {
+  ul li > a {
+    font-size: 1.05rem;
+    line-height: 1.8rem;
+    transition: color 0.2s ease, text-shadow 0.2s ease;
+
+    &:hover {
+      color: var(--secondary) !important;
+      text-shadow: 0 0 8px rgba(122, 162, 247, 0.4);
+    }
+  }
+}
+
+.folder-container {
+  div > a,
+  div > button span {
+    font-size: 1.05rem !important;
+    line-height: 1.8rem;
+    transition: color 0.2s ease, text-shadow 0.2s ease;
+  }
+
+  &:hover div > a,
+  &:hover div > button span {
+    text-shadow: 0 0 8px rgba(122, 162, 247, 0.3);
+  }
+}
+
+.explorer-content ul li {
+  padding: 0.15rem 0;
+}
+
+// --- Explorer: larger folder chevrons ---
+.folder-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+// --- Sidebar: subtle separator with breathing room ---
+.sidebar.left {
+  border-right: 1px solid var(--lightgray);
+  padding-right: 2rem;
+  margin-right: 2rem;
+}
+
+// --- Page title: reduce visual weight ---
+.page-title {
+  font-size: 1.3rem;
+  font-weight: 400;
+  opacity: 0.75;
+}
+
+// --- Links: glow on hover ---
+a.internal {
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+
+  &:hover {
+    text-shadow: 0 0 10px rgba(122, 162, 247, 0.5);
+  }
+}
+
+// --- Tags: pill styling with glow (colors applied by TagColors.tsx) ---
+a.internal.tag-link {
+  border-radius: 1rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  transition: opacity 0.2s ease, box-shadow 0.2s ease, text-shadow 0.2s ease;
+
+  &:hover {
+    opacity: 0.9;
+    box-shadow: 0 0 12px rgba(122, 162, 247, 0.4);
+    text-shadow: none;
+  }
+}
+
+// --- Search: polished input ---
+.search {
+  & > button {
+    border: 1px solid var(--lightgray);
+    border-radius: 8px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover, &:focus {
+      border-color: var(--secondary);
+      box-shadow: 0 0 8px rgba(122, 162, 247, 0.25);
+    }
+  }
+}
+
+// --- Tables: alternating rows, rounded, hover ---
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid var(--lightgray);
+
+  thead tr {
+    background-color: var(--lightgray);
+
+    th {
+      border-bottom: 2px solid var(--gray);
+      padding: 0.6rem 1rem;
+      font-weight: 600;
+    }
+  }
+
+  tbody tr {
+    transition: background-color 0.15s ease;
+
+    &:nth-child(even) {
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+
+    &:hover {
+      background-color: rgba(122, 162, 247, 0.08);
+    }
+
+    td {
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid var(--lightgray);
+    }
+
+    &:last-child td {
+      border-bottom: none;
+    }
+  }
+}
+
+// --- Custom scrollbar ---
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--lightgray);
+  border-radius: 3px;
+
+  &:hover {
+    background-color: var(--gray);
+  }
+}
+
+// Firefox scrollbar
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--lightgray) transparent;
+}
+
+// --- Graph: taller container with subtle border glow ---
+.graph > .graph-outer {
+  height: 350px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    border-color: var(--secondary);
+    box-shadow: 0 0 12px rgba(122, 162, 247, 0.15);
+  }
+}
+
+// --- Smooth transitions on all interactive elements ---
+.darkmode,
+.reader-mode,
+button {
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+// --- Footer: remove ---
+footer {
+  display: none !important;
+}

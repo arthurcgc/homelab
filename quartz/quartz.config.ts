@@ -3,7 +3,7 @@ import * as Plugin from "./quartz/plugins"
 
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "Arthur's Notes",
+    pageTitle: "Arthur's Brain",
     pageTitleSuffix: "",
     enableSPA: true,
     enablePopovers: true,
@@ -33,15 +33,15 @@ const config: QuartzConfig = {
           textHighlight: "#fff23688",
         },
         darkMode: {
-          light: "#1a1a2e",
-          lightgray: "#16213e",
-          gray: "#646464",
-          darkgray: "#d4d4d4",
-          dark: "#ebebec",
-          secondary: "#e94560",
-          tertiary: "#84a59d",
-          highlight: "rgba(143, 159, 169, 0.15)",
-          textHighlight: "#b3aa0288",
+          light: "#1a1b26",
+          lightgray: "#24283b",
+          gray: "#565f89",
+          darkgray: "#a9b1d6",
+          dark: "#c0caf5",
+          secondary: "#7aa2f7",
+          tertiary: "#7dcfff",
+          highlight: "rgba(41, 46, 66, 0.5)",
+          textHighlight: "#e0af6888",
         },
       },
     },
