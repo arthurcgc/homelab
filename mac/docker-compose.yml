@@ -1,0 +1,64 @@
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./index.html:/usr/share/nginx/html/index.html:ro
+    depends_on:
+      - glance
+      - glances
+      - quartz
+    networks:
+      - homelab
+
+  glance:
+    image: glanceapp/glance
+    container_name: glance
+    restart: unless-stopped
+    volumes:
+      - ../glance/config:/app/config
+      - ../glance/assets:/app/assets
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+    networks:
+      - homelab
+
+  glances:
+    image: nicolargo/glances:latest-full
+    container_name: glances
+    restart: unless-stopped
+    ports:
+      - "61208:61208"
+    read_only: true
+    volumes:
+      - /:/rootfs:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    tmpfs:
+      - /tmp
+    environment:
+      - GLANCES_OPT=-w --enable-mcp
+      - TZ=America/Sao_Paulo
+      - PYTHONPYCACHEPREFIX=/tmp/py_caches
+    networks:
+      - homelab
+
+  quartz:
+    build: ../quartz
+    container_name: quartz
+    restart: unless-stopped
+    volumes:
+      - ${HOME}/notes:/usr/src/app/content:ro
+      - ${HOME}/Documents:${HOME}/Documents:ro
+      - ${HOME}/dotfiles:${HOME}/dotfiles:ro
+    networks:
+      - homelab
+
+networks:
+  homelab:
+    driver: bridge

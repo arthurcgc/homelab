@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arthur's MacBook Air</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, system-ui, sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      min-height: 100vh;
+      padding: 3rem 2rem;
+    }
+    .container { max-width: 900px; margin: 0 auto; }
+
+    .header {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #00ff88;
+    }
+    .header-meta {
+      font-size: 0.8rem;
+      color: #444;
+      font-family: monospace;
+    }
+
+    .group { margin-bottom: 2.5rem; }
+    .group-title {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #555;
+      margin-bottom: 0.75rem;
+      padding-left: 0.25rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.25rem;
+      background: #111;
+      border: 1px solid #1e1e1e;
+      border-radius: 10px;
+      text-decoration: none;
+      color: #e0e0e0;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+      min-height: 120px;
+    }
+    a.card:hover {
+      border-color: #00ff88;
+      background: #161616;
+      transform: translateY(-2px);
+      cursor: pointer;
+    }
+    div.card:hover {
+      border-color: #444;
+    }
+
+    .card-top { margin-bottom: 1rem; }
+    .card-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+    .card-desc {
+      font-size: 0.8rem;
+      color: #666;
+      line-height: 1.4;
+    }
+
+    .card-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .card-path {
+      font-size: 0.7rem;
+      color: #333;
+      font-family: monospace;
+    }
+    .card-tag {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .tag-web {
+      color: #00ff88;
+      background: rgba(0, 255, 136, 0.08);
+    }
+    .tag-monitor {
+      color: #ffaa00;
+      background: rgba(255, 170, 0, 0.08);
+    }
+
+    .hw-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.5rem;
+    }
+    .hw-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0.8rem;
+      background: #111;
+      border: 1px solid #1a1a1a;
+      border-radius: 6px;
+      font-size: 0.75rem;
+    }
+    .hw-label { color: #555; }
+    .hw-value { color: #888; font-family: monospace; }
+
+    @media (max-width: 600px) {
+      body { padding: 2rem 1rem; }
+      .grid { grid-template-columns: 1fr; }
+      .hw-info { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Arthur's MacBook Air</h1>
+      <span class="header-meta">macOS &middot; Apple M4 &middot; 24GB</span>
+    </div>
+
+    <div class="group">
+      <div class="group-title">Services</div>
+      <div class="grid">
+        <a class="card" href="/glance/">
+          <div class="card-top">
+            <div class="card-name">Glance</div>
+            <div class="card-desc">RSS feeds, market data, YouTube, podcasts, HN &amp; Reddit</div>
+          </div>
+          <div class="card-bottom">
+            <span class="card-path">/glance</span>
+            <span class="card-tag tag-web">web</span>
+          </div>
+        </a>
+        <a class="card" href="/quartz/">
+          <div class="card-top">
+            <div class="card-name">Quartz</div>
+            <div class="card-desc">Knowledge base built from ~/notes. Hot-reloads on changes.</div>
+          </div>
+          <div class="card-bottom">
+            <span class="card-path">/quartz</span>
+            <span class="card-tag tag-web">web</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-title">Monitoring</div>
+      <div class="grid">
+        <a class="card" href="/glances/">
+          <div class="card-top">
+            <div class="card-name">Glances</div>
+            <div class="card-desc">Real-time system monitor. CPU, memory, disk, network, containers.</div>
+          </div>
+          <div class="card-bottom">
+            <span class="card-path">/glances</span>
+            <span class="card-tag tag-monitor">monitor</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-title">Hardware</div>
+      <div class="hw-info">
+        <div class="hw-item">
+          <span class="hw-label">Chip</span>
+          <span class="hw-value">Apple M4</span>
+        </div>
+        <div class="hw-item">
+          <span class="hw-label">RAM</span>
+          <span class="hw-value">24 GB</span>
+        </div>
+        <div class="hw-item">
+          <span class="hw-label">OS</span>
+          <span class="hw-value">macOS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

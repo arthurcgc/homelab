@@ -46,13 +46,22 @@
             - type: hacker-news
             - type: lobsters
 
-        - type: videos
-          channels:
-            - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
-            - UCsBjURrPoezykLs9EqgamOA # Fireship
-            - UCZgt6AzoyjslHTC9dz0UoTw # eBPF Summit / Isovalent
-            - UCrber_mFvp_FEF7D9u8PDEA # Rawkode Academy (K8s/DevOps)
-            - UC9x0AN7BWHpCDHSm9NiJFJQ # NetworkChuck
+        - type: rss
+          title: YouTube
+          limit: 15
+          collapse-after: 5
+          cache: 2h
+          feeds:
+            - url: https://inv.nadeko.net/feed/channel/UCR-DXc1voovS8nhAvccRZhg
+              title: Jeff Geerling
+            - url: https://inv.nadeko.net/feed/channel/UCsBjURrPoezykLs9EqgamOA
+              title: Fireship
+            - url: https://inv.nadeko.net/feed/channel/UCZgt6AzoyjslHTC9dz0UoTw
+              title: eBPF Summit / Isovalent
+            - url: https://inv.nadeko.net/feed/channel/UCrber_mFvp_FEF7D9u8PDEA
+              title: Rawkode Academy
+            - url: https://inv.nadeko.net/feed/channel/UC9x0AN7BWHpCDHSm9NiJFJQ
+              title: NetworkChuck
 
         - type: rss
           title: Podcasts
