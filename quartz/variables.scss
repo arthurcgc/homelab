@@ -16,10 +16,12 @@ $mobile: "(max-width: #{map.get($breakpoints, mobile)})";
 $tablet: "(min-width: #{map.get($breakpoints, mobile)}) and (max-width: #{map.get($breakpoints, desktop)})";
 $desktop: "(min-width: #{map.get($breakpoints, desktop)})";
 
-// Customized: wider content area for more page real estate.
-// Upstream default was `#{map.get($breakpoints, mobile)}` (800px).
-$pageWidth: 1200px;
-$sidePanelWidth: 320px; //380px;
+// Customized: shrunk sidebars to give the markdown center column more room.
+// On a viewport-bound layout (any laptop screen), the center column = viewport
+// minus 2 × sidebar minus padding. So sidebar width is the real lever.
+// Upstream defaults: $pageWidth=#{map.get($breakpoints, mobile)} (unused), $sidePanelWidth=320px.
+$pageWidth: 1200px;       // not actually used by Quartz layout rules — left for doc intent
+$sidePanelWidth: 240px;   // was 320px — frees 160px back to the center column
 $topSpacing: 6rem;
 $boldWeight: 700;
 $semiBoldWeight: 600;
