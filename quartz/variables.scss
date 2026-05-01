@@ -16,12 +16,17 @@ $mobile: "(max-width: #{map.get($breakpoints, mobile)})";
 $tablet: "(min-width: #{map.get($breakpoints, mobile)}) and (max-width: #{map.get($breakpoints, desktop)})";
 $desktop: "(min-width: #{map.get($breakpoints, desktop)})";
 
-// Customized: shrunk sidebars to give the markdown center column more room.
+// Customized: asymmetric sidebars + wider center column.
 // On a viewport-bound layout (any laptop screen), the center column = viewport
-// minus 2 × sidebar minus padding. So sidebar width is the real lever.
+// minus left-sidebar minus right-sidebar minus padding. So sidebar widths are the real lever.
 // Upstream defaults: $pageWidth=#{map.get($breakpoints, mobile)} (unused), $sidePanelWidth=320px.
-$pageWidth: 1200px;       // not actually used by Quartz layout rules — left for doc intent
-$sidePanelWidth: 240px;   // was 320px — frees 160px back to the center column
+//
+// Left sidebar holds the file-tree Explorer which needs room for nested folder paths.
+// Right sidebar holds the (square-ish) Graph + TOC + Backlinks, which fit fine in less space.
+$pageWidth: 1200px;            // not actually used by Quartz layout rules — left for doc intent
+$sidePanelLeftWidth: 300px;    // was symmetric 320px — give Explorer most of its room back
+$sidePanelRightWidth: 240px;   // was symmetric 320px — keep right tighter to widen center
+$sidePanelWidth: $sidePanelLeftWidth;  // legacy alias (kept in case other rules import it)
 $topSpacing: 6rem;
 $boldWeight: 700;
 $semiBoldWeight: 600;
@@ -41,7 +46,7 @@ $mobileGrid: (
 );
 $tabletGrid: (
   templateRows: "auto auto auto auto",
-  templateColumns: "#{$sidePanelWidth} auto",
+  templateColumns: "#{$sidePanelLeftWidth} auto",
   rowGap: "5px",
   columnGap: "5px",
   templateAreas:
@@ -52,7 +57,7 @@ $tabletGrid: (
 );
 $desktopGrid: (
   templateRows: "auto auto auto",
-  templateColumns: "#{$sidePanelWidth} auto #{$sidePanelWidth}",
+  templateColumns: "#{$sidePanelLeftWidth} auto #{$sidePanelRightWidth}",
   rowGap: "5px",
   columnGap: "5px",
   templateAreas:
