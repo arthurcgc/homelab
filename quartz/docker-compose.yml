@@ -8,4 +8,9 @@ services:
       - ${HOME}/notes:/usr/src/app/content:ro
       - ${HOME}/Documents:${HOME}/Documents:ro
       - ${HOME}/dotfiles:${HOME}/dotfiles:ro
+      # Canonical Quartz customizations live alongside this compose file in the homelab repo.
+      # Bind-mounted at runtime so config/layout/style changes don't require an image rebuild.
+      - ./quartz.config.ts:/usr/src/app/quartz.config.ts:ro
+      - ./quartz.layout.ts:/usr/src/app/quartz.layout.ts:ro
+      - ./variables.scss:/usr/src/app/quartz/styles/variables.scss:ro
     restart: unless-stopped
