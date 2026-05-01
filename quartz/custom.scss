@@ -1,5 +1,13 @@
 @use "./base.scss";
 
+// --- Layout: widen the page wrapper for more content real estate ---
+// Default in base.scss is `calc($breakpoints.desktop + 300px)` = 1500px on a
+// 1200px desktop breakpoint, which leaves only ~860px for the center column
+// after the two 320px sidebars. Override to give markdown more room.
+.page {
+  max-width: 1800px !important;
+}
+
 // --- Explorer: hide the desktop "Explorer" toggle header ---
 button.desktop-explorer {
   display: none !important;

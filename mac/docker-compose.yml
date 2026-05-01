@@ -61,6 +61,7 @@ services:
       - ${HOME}/Documents/homelab/quartz/quartz.config.ts:/usr/src/app/quartz.config.ts:ro
       - ${HOME}/Documents/homelab/quartz/quartz.layout.ts:/usr/src/app/quartz.layout.ts:ro
       - ${HOME}/Documents/homelab/quartz/variables.scss:/usr/src/app/quartz/styles/variables.scss:ro
+      - ${HOME}/Documents/homelab/quartz/custom.scss:/usr/src/app/quartz/styles/custom.scss:ro
     networks:
       - homelab
 

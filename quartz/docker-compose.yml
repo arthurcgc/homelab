@@ -13,4 +13,5 @@ services:
       - ./quartz.config.ts:/usr/src/app/quartz.config.ts:ro
       - ./quartz.layout.ts:/usr/src/app/quartz.layout.ts:ro
       - ./variables.scss:/usr/src/app/quartz/styles/variables.scss:ro
+      - ./custom.scss:/usr/src/app/quartz/styles/custom.scss:ro
     restart: unless-stopped
