@@ -24,7 +24,7 @@ $desktop: "(min-width: #{map.get($breakpoints, desktop)})";
 // Left sidebar holds the file-tree Explorer which needs room for nested folder paths.
 // Right sidebar holds the (square-ish) Graph + TOC + Backlinks, which fit fine in less space.
 $pageWidth: 1200px;            // not actually used by Quartz layout rules — left for doc intent
-$sidePanelLeftWidth: 300px;    // was symmetric 320px — give Explorer most of its room back
+$sidePanelLeftWidth: 280px;    // was symmetric 320px — Explorer fits in less room thanks to trimmed padding (custom.scss)
 $sidePanelRightWidth: 240px;   // was symmetric 320px — keep right tighter to widen center
 $sidePanelWidth: $sidePanelLeftWidth;  // legacy alias (kept in case other rules import it)
 $topSpacing: 6rem;
