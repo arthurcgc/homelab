@@ -15,7 +15,7 @@ RUN git clone --depth 1 --branch v4 https://github.com/jackyzha0/quartz.git . &&
       let c = fs.readFileSync('quartz/components/scripts/graph.inline.ts', 'utf8'); \
       c = c.replace( \
         '} else if (visited.has(d.id) || d.id.startsWith(\"tags/\")) {\n      return computedStyleMap[\"--tertiary\"]', \
-        '} else if (d.id.startsWith(\"tags/\")) {\n      return \"#33ff66\"\n    } else if (visited.has(d.id)) {\n      return \"#33ff66\"' \
+        '} else if (d.id.startsWith(\"tags/\")) {\n      return \"#363636\"\n    } else if (visited.has(d.id)) {\n      return \"#33ff66\"' \
       ); \
       c = c.replace( \
         'return computedStyleMap[\"--secondary\"]\n    } else', \
@@ -23,7 +23,7 @@ RUN git clone --depth 1 --branch v4 https://github.com/jackyzha0/quartz.git . &&
       ); \
       c = c.replace( \
         'return computedStyleMap[\"--gray\"]\n', \
-        'return \"#363636\"\n' \
+        'return \"#33ff66\"\n' \
       ); \
       c = c.replace( \
         'isTagNode ? computedStyleMap[\"--light\"] : color(n)', \
