@@ -107,6 +107,9 @@ a.internal {
 
 // --- Tags: pill styling with glow (colors applied by TagColors.tsx) ---
 a.internal.tag-link {
+  // Strip the inherited `var(--highlight)` (faint green) from `a.internal`.
+  // TagColors.tsx sets the actual hash-based HSL background per-tag at runtime.
+  background-color: transparent !important;
   border-radius: 1rem;
   padding: 0.25rem 0.75rem;
   font-size: 0.85rem;
