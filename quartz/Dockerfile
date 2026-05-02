@@ -29,6 +29,10 @@ RUN git clone --depth 1 --branch v4 https://github.com/jackyzha0/quartz.git . &&
         'isTagNode ? computedStyleMap[\"--light\"] : color(n)', \
         'color(n)' \
       ); \
+      c = c.replace( \
+        'gfx.stroke({ width: 2, color: computedStyleMap[\"--tertiary\"] })', \
+        'gfx.stroke({ width: 0 })' \
+      ); \
       fs.writeFileSync('quartz/components/scripts/graph.inline.ts', c); \
     "
 
