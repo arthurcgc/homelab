@@ -8,6 +8,18 @@
   max-width: 1800px !important;
 }
 
+// --- Page title: terminal-monospace + subtle matrix glow ---
+.page-title a {
+  font-family: var(--codeFont) !important;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 12px rgba(51, 255, 102, 0.35);
+  transition: text-shadow 0.2s ease;
+
+  &:hover {
+    text-shadow: 0 0 16px rgba(51, 255, 102, 0.6);
+  }
+}
+
 // --- Left sidebar: trim horizontal padding so the Explorer has more usable width ---
 // Default `.sidebar` padding is `6rem 2rem 2rem` (32px each horizontal side).
 // 0.75rem (12px) gives the file tree another ~40px of breathing room without

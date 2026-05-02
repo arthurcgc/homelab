@@ -19,7 +19,7 @@ RUN git clone --depth 1 --branch v4 https://github.com/jackyzha0/quartz.git . &&
       ); \
       c = c.replace( \
         'return computedStyleMap[\"--secondary\"]\n    } else', \
-        'return \"#33ff66\"\n    } else' \
+        'return \"#ffffff\"\n    } else' \
       ); \
       c = c.replace( \
         'return computedStyleMap[\"--gray\"]\n', \
