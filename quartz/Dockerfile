@@ -15,11 +15,11 @@ RUN git clone --depth 1 --branch v4 https://github.com/jackyzha0/quartz.git . &&
       let c = fs.readFileSync('quartz/components/scripts/graph.inline.ts', 'utf8'); \
       c = c.replace( \
         '} else if (visited.has(d.id) || d.id.startsWith(\"tags/\")) {\n      return computedStyleMap[\"--tertiary\"]', \
-        '} else if (d.id.startsWith(\"tags/\")) {\n      return \"#7ee787\"\n    } else if (visited.has(d.id)) {\n      return \"#33ff66\"' \
+        '} else if (d.id.startsWith(\"tags/\")) {\n      return \"#33ff66\"\n    } else if (visited.has(d.id)) {\n      return \"#33ff66\"' \
       ); \
       c = c.replace( \
         'return computedStyleMap[\"--secondary\"]\n    } else', \
-        'return \"#00ff41\"\n    } else' \
+        'return \"#33ff66\"\n    } else' \
       ); \
       c = c.replace( \
         'return computedStyleMap[\"--gray\"]\n', \
