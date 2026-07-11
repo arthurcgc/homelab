@@ -8,15 +8,15 @@
   max-width: 1800px !important;
 }
 
-// --- Page title: terminal-monospace + subtle matrix glow ---
+// --- Page title: terminal-monospace + subtle violet glow ---
 .page-title a {
   font-family: var(--codeFont) !important;
   letter-spacing: 0.02em;
-  text-shadow: 0 0 12px rgba(51, 255, 102, 0.35);
+  text-shadow: 0 0 10px rgba(187, 154, 247, 0.25);
   transition: text-shadow 0.2s ease;
 
   &:hover {
-    text-shadow: 0 0 16px rgba(51, 255, 102, 0.6);
+    text-shadow: 0 0 14px rgba(187, 154, 247, 0.5);
   }
 }
 
@@ -53,7 +53,7 @@ button.desktop-explorer {
 
     &:hover {
       color: var(--secondary) !important;
-      text-shadow: 0 0 8px rgba(122, 162, 247, 0.4);
+      text-shadow: 0 0 8px rgba(187, 154, 247, 0.4);
     }
   }
 }
@@ -68,7 +68,7 @@ button.desktop-explorer {
 
   &:hover div > a,
   &:hover div > button span {
-    text-shadow: 0 0 8px rgba(122, 162, 247, 0.3);
+    text-shadow: 0 0 8px rgba(187, 154, 247, 0.3);
   }
 }
 
@@ -101,15 +101,19 @@ a.internal {
   transition: color 0.2s ease, text-shadow 0.2s ease;
 
   &:hover {
-    text-shadow: 0 0 10px rgba(122, 162, 247, 0.5);
+    text-shadow: 0 0 10px rgba(187, 154, 247, 0.5);
   }
 }
 
 // --- Tags: pill styling with glow (colors applied by TagColors.tsx) ---
 a.internal.tag-link {
-  // Strip the inherited `var(--highlight)` (faint green) from `a.internal`.
-  // TagColors.tsx sets the actual hash-based HSL background per-tag at runtime.
-  background-color: transparent !important;
+  // Strip the inherited `var(--highlight)` (faint violet) from `a.internal`.
+  // NOTE: no `!important` here — TagColors.tsx sets the real hash-based HSL
+  // background per-tag at runtime via an inline style. An `!important` rule
+  // would beat that inline style and leave every tag transparent (invisible).
+  // This non-important rule still wins over `a.internal` by specificity, but
+  // yields to the inline color JS applies.
+  background-color: transparent;
   border-radius: 1rem;
   padding: 0.25rem 0.75rem;
   font-size: 0.85rem;
@@ -120,7 +124,7 @@ a.internal.tag-link {
 
   &:hover {
     opacity: 0.9;
-    box-shadow: 0 0 12px rgba(122, 162, 247, 0.4);
+    box-shadow: 0 0 12px rgba(187, 154, 247, 0.4);
     text-shadow: none;
   }
 }
@@ -134,7 +138,7 @@ a.internal.tag-link {
 
     &:hover, &:focus {
       border-color: var(--secondary);
-      box-shadow: 0 0 8px rgba(122, 162, 247, 0.25);
+      box-shadow: 0 0 8px rgba(187, 154, 247, 0.25);
     }
   }
 }
@@ -165,7 +169,7 @@ table {
     }
 
     &:hover {
-      background-color: rgba(122, 162, 247, 0.08);
+      background-color: rgba(187, 154, 247, 0.08);
     }
 
     td {
@@ -211,7 +215,7 @@ table {
 
   &:hover {
     border-color: var(--secondary);
-    box-shadow: 0 0 12px rgba(122, 162, 247, 0.15);
+    box-shadow: 0 0 12px rgba(187, 154, 247, 0.15);
   }
 }
 
