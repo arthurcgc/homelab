@@ -6,11 +6,12 @@ server:
   base-url: /glance
   assets-path: /app/assets
 
+# Tokyo Night — matches the Quartz KB theme (violet #bb9af7 / pink #f7768e on #16161e)
 theme:
-  background-color: "0 0% 4%"
-  primary-color: "136 100% 50%"
-  positive-color: "136 100% 50%"
-  negative-color: "348 100% 50%"
+  background-color: "235 15% 9%"
+  primary-color: "261 85% 79%"
+  positive-color: "221 89% 72%"
+  negative-color: "349 89% 72%"
   contrast-multiplier: 1.3
   text-saturation-multiplier: 1.2
   custom-css-file: /assets/user.css
