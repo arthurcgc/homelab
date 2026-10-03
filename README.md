@@ -138,11 +138,12 @@ docker exec -it paperless python3 manage.py createsuperuser
 
 ## Home Assistant
 
-Home automation for the house lights (Avant and Ekaza Wi-Fi bulbs through the Tuya integration). It runs on the Raspberry Pi (`pi-faye.local`, on Wi-Fi), not on pichau. See `home-assistant/PLAN.md` for the full plan.
+Home automation for the house lights (Avant and Ekaza Wi-Fi bulbs, controlled locally through tuya-local) and the living room TV. It runs on the Raspberry Pi (`pi-faye.local`, on Wi-Fi), not on pichau. See `home-assistant/README.md` for the Casa floor-plan panel and party mode, and `home-assistant/PLAN.md` for the full plan.
 
 - **Image:** `ghcr.io/home-assistant/home-assistant:2026.9.4` (upstream)
 - **Port:** 8123 (`network_mode: host`)
 - **Config:** `/opt/homeassistant/config` on the Pi (not in this repo)
+- **Casa panel:** `http://pi-faye.local:8123/casa`, a floor plan of the house for toggling lights and party mode (`home-assistant/panel/`)
 
 ```bash
 ssh samsepiol@pi-faye.local 'cd /opt/homeassistant && docker compose up -d'
