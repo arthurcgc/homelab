@@ -71,7 +71,7 @@ Party mode is `input_boolean.living_room_party`. It always starts off after a Ho
 
 - `script.living_room_party_wave` rolls a color wave across the living room bulbs.
 - `script.living_room_party_tv` wakes the TV with Wake on LAN, casts the YouTube mix and sets the volume to 20%.
-- Turning the toggle off restores the lights and closes YouTube on the TV.
+- Turning the toggle off restores the lights and closes YouTube on the TV. The restore takes about 3 seconds; switching the party back on during it queues the new wave, which starts as soon as the restore ends.
 - An automation turns the party off after 2 hours.
 
 `PLAN.md` explains how each part was tuned.
