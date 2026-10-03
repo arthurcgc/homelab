@@ -9,6 +9,7 @@ import asyncio
 import json
 import logging
 import os
+import re
 from pathlib import Path
 from typing import Optional
 
@@ -112,7 +113,7 @@ class Remote:
         except Exception as exc:  # the TV may already have dropped it
             log.info("disconnect: %r", exc)
 
-    async def play(self, video_id: str) -> dict:
+    async def play(self, video_id: str, list_id: Optional[str] = None) -> dict:
         async with self.lock:
             async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=10)) as session:
                 if not await self.app_running(session):
@@ -124,8 +125,12 @@ class Remote:
             except asyncio.TimeoutError:
                 return {"ok": False, "error": "TV YouTube app did not become reachable within 45s"}
             await asyncio.sleep(3)
-            ok = await self.api.play_video(video_id)
-            log.info("play_video %s: %s", video_id, ok)
+            if list_id:
+                # pyytlounge's play_video sends setPlaylist with a videoId only; the lounge command also takes a listId.
+                ok = await self.api._command("setPlaylist", {"videoId": video_id, "listId": list_id, "currentIndex": "0"})
+            else:
+                ok = await self.api.play_video(video_id)
+            log.info("play %s (list %s): %s", video_id, list_id, ok)
             return {"ok": bool(ok)}
 
     async def stop(self) -> dict:
@@ -138,10 +143,43 @@ class Remote:
 
 remote = Remote()
 
+VIDEO_ID = re.compile(r"(?:v=|youtu\.be/|/shorts/|/live/|/embed/)([A-Za-z0-9_-]{11})")
+LIST_ID = re.compile(r"[?&]list=([A-Za-z0-9_-]+)")
+
+
+def parse_video(value: str) -> tuple[Optional[str], Optional[str]]:
+    """Return (video ID, playlist ID) from a bare video ID or any common YouTube URL."""
+    value = value.strip()
+    if re.fullmatch(r"[A-Za-z0-9_-]{11}", value):
+        return value, None
+    video = VIDEO_ID.search(value)
+    playlist = LIST_ID.search(value)
+    if not video and not playlist:
+        raise ValueError(f"no YouTube video or playlist ID in {value!r}")
+    return (video.group(1) if video else None), (playlist.group(1) if playlist else None)
+
+
+async def first_video_of(list_id: str) -> str:
+    """The TV's setPlaylist needs a starting video; read the first one from the playlist page."""
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=15)) as session:
+        async with session.get(f"https://www.youtube.com/playlist?list={list_id}",
+                               headers={"User-Agent": "Mozilla/5.0", "Accept-Language": "en"}) as resp:
+            page = await resp.text()
+    match = re.search(r'"videoId":"([A-Za-z0-9_-]{11})"', page)
+    if not match:
+        raise ValueError(f"could not find a video in playlist {list_id}")
+    return match.group(1)
+
 
 async def handle_play(request: web.Request) -> web.Response:
     body = await request.json()
-    return web.json_response(await remote.play(body["video_id"]))
+    try:
+        video_id, list_id = parse_video(body.get("video") or body["video_id"])
+        if list_id and not video_id:
+            video_id = await first_video_of(list_id)
+    except (KeyError, ValueError) as exc:
+        return web.json_response({"ok": False, "error": str(exc)}, status=400)
+    return web.json_response({**await remote.play(video_id, list_id), "video_id": video_id, "list_id": list_id})
 
 
 async def handle_stop(request: web.Request) -> web.Response:
