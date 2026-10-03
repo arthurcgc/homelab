@@ -29,6 +29,20 @@ services:
     depends_on:
       - homeassistant
 
+  yt-remote:
+    container_name: yt-remote
+    build: ./yt-remote
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8091:8091"
+    environment:
+      - SCREEN_ID=${YT_SCREEN_ID:?set YT_SCREEN_ID in .env}
+      - TV_HOST=192.168.0.16
+    volumes:
+      - yt-remote-data:/data
+
 volumes:
   ha-mcp-data:
     name: ha-mcp-data
+  yt-remote-data:
+    name: yt-remote-data

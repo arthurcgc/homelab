@@ -70,8 +70,38 @@ To add a feature, add its entity next to the others, draw it in `_build()`, and 
 Party mode is `input_boolean.living_room_party`. It always starts off after a Home Assistant restart.
 
 - `script.living_room_party_wave` rolls a color wave across the living room bulbs.
-- `script.living_room_party_tv` wakes the TV with Wake on LAN, casts the YouTube mix and sets the volume to 55%, tuned for the JBL Xtreme 2 speaker connected to the TV over Bluetooth.
-- Turning the toggle off restores the lights and closes YouTube on the TV. The restore takes about 3 seconds; switching the party back on during it queues the new wave, which starts as soon as the restore ends.
+- `script.living_room_party_tv` wakes the TV with Wake on LAN, plays the YouTube mix through `yt-remote` (below) in the TV's signed-in Premium profile, and sets the volume to 55%, tuned for the JBL Xtreme 2 speaker connected to the TV over Bluetooth.
+- Turning the toggle off closes YouTube on the TV and restores the lights: each bulb goes back on or off as it was before the party, and the ones that are on return to the default warm yellow (2700 K, full brightness), even if the snapshot was taken while they still had party colors. The restore takes about 3 seconds; switching the party back on during it queues the new wave, which starts as soon as the restore ends.
 - An automation turns the party off after 2 hours.
+- The wave keeps going when a bulb drops off Wi-Fi, because each bulb command skips errors. If the wave stops for any other reason while the party is on (an error, or a script reload, which aborts running scripts), the wave watchdog automation restarts it after 5 seconds in resume mode. Resume mode keeps the original snapshot, so stopping the party still restores the lights from before it.
 
 `PLAN.md` explains how each part was tuned.
+
+## yt-remote
+
+`yt-remote` (`yt-remote/`) plays YouTube videos on the TV without ads. It runs as a third container in `docker-compose.yml` and listens only on the Pi itself, at `http://127.0.0.1:8091`.
+
+Casting from Home Assistant always plays as an anonymous viewer, so YouTube Premium does not apply and ads play. `yt-remote` instead controls the TV's own YouTube app, which is signed in to the Premium account, through YouTube's lounge API (the protocol phones use after "Link with TV code"), using the `pyytlounge` library. It stays connected to the app for as long as the app runs, because a remote that sends one command and disconnects leaves the app stuttering.
+
+| Endpoint | What it does |
+|----------|--------------|
+| `POST /play` with `{"video_id": "..."}` | Opens YouTube on the TV in the Premium profile if it is not running, waits for it, and plays the video |
+| `POST /stop` | Closes YouTube on the TV |
+| `POST /pause` | Pauses playback |
+| `GET /status` | Pairing, connection, and what is playing |
+
+Home Assistant calls it through `rest_command.yt_remote_play` and `rest_command.yt_remote_stop` in `configuration.yaml`.
+
+How it reaches the TV:
+
+- **Opening the app** uses the TV's DIAL endpoint, `POST http://192.168.0.16:8080/ws/apps/YouTube` with the header `Origin: package:com.google.android.youtube`. Without that header the TV answers 403. The app ignores any video ID passed this way, which is why playback goes through the lounge.
+- **Pairing** uses the TV app's permanent lounge screen ID, `YT_SCREEN_ID` in `/opt/homeassistant/.env`. It was obtained once by starting the app over DIAL with a `pairingCode` and asking YouTube's `get_screen` endpoint for that code. The login it derives is kept in the `yt-remote-data` volume.
+- **Volume and mute go through Google Cast.** The Samsung integration sets volume over UPnP, which the TV rejects while its audio goes to the Bluetooth speaker, and its unmute presses the remote's mute key, which toggles. Cast sets both directly and works without starting a Cast copy of YouTube.
+- **Only one player may run.** A Google Cast copy of YouTube left running in the background answers the same lounge session and makes both players stutter and jump. The party script closes it (`media_player.turn_off` on the Cast entity) before playing.
+
+Deploy a change:
+
+```bash
+scp -r home-assistant/yt-remote samsepiol@pi-faye.local:/opt/homeassistant/
+ssh samsepiol@pi-faye.local 'cd /opt/homeassistant && docker compose up -d --build yt-remote'
+```
