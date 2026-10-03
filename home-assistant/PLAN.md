@@ -43,6 +43,8 @@ The official Tuya integration is cloud based: every command goes from Home Assis
 - The bulbs report `supported_features: 4`, which is the effect flag, not transitions. Home Assistant drops any `transition` value. The smooth fades come from the bulb firmware, which fades on every color change at its own fixed speed.
 - The bulbs still keep their own connection to Tuya's cloud. Blocking their internet access at the router would cut it entirely, at the cost of the Smart Life app.
 
+The router is Claro's ZTE F6600P, with one network name ("Don") for both bands. On 2026-10-03 its client list showed the Living Room and Guest Room bulbs at −76 to −81 dBm, against a noise floor near −92 dBm, which is too weak for cheap bulbs to stay connected reliably. The Corridor and Office bulbs were at −59 to −69 dBm. `sala-2-2` dropped at −70 dBm, but it has a different Wi-Fi chip (`lwip0`) and uses protocol 3.5, so its drops may be firmware. If drops become a problem, add an access point near the Living Room and Guest Room with the same network name and password, so the bulbs reconnect without re-pairing.
+
 Before buying more bulbs or relying on a model, check that its box says Wi-Fi. Some Ekaza products use Zigbee or Bluetooth.
 
 ## Claude access
@@ -69,7 +71,8 @@ Before buying more bulbs or relying on a model, check that its box says Wi-Fi. S
 - [x] Move all 14 lights to tuya-local
 - [x] Rename the cloud light entities to `light.<name>_cloud`, give the tuya-local entities the original IDs, hide tuya-local's scene, timer and do-not-disturb entities, and point the party script at the original IDs
 - [x] Disable the official Tuya cloud integration (re-enable it under Settings, then Devices & Services, if tuya-local ever fails)
-- [ ] Samsung TV: add the Samsung Smart TV integration (needs Wake-on-LAN enabled on the TV and a wired connection), then test launching a YouTube playlist with a request to the TV's own API on port 8080. If the TV ignores the playlist, add a Chromecast or Google TV Streamer and use the Cast integration
+- [x] Samsung TV (QN55Q60D, `192.168.0.16`, MAC `c8:a6:ef:15:a9:21`) in party mode: `script.living_room_party_tv` wakes it with the Wake on LAN button (the Samsung integration's own turn_on does not wake it), casts the Groove Never Dies mix (`HR7y3f18Ug8`) through the TV's built-in Google Cast via `script.living_room_tv_cast_mix`, retries once, unmutes, and sets the volume to 20%. The first cast after YouTube was closed fails with a lounge `screen_ids` error that `continue_on_error` cannot catch, so the cast runs in its own script started with `script.turn_on`. Stopping closes the cast app with `media_player.turn_off`, because `media_stop` only pauses YouTube
+- [ ] Run the full party from a TV in standby once, to prove the wake, failed first cast and retry happen in one run
 - [ ] Mount the `storage` drive and schedule backups to it
 - [ ] Boot the Pi without the desktop and close port 111 (`rpcbind`)
 
