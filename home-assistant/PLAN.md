@@ -7,11 +7,11 @@ Home Assistant controls the lights in the house. It runs on the Raspberry Pi, no
 | Item | Value |
 |------|-------|
 | Host | Raspberry Pi 4 Model B, 8 GB RAM, hostname `pi-faye` |
-| Address | `192.168.0.17` on ethernet |
+| Address | `pi-faye.local` (mDNS) on Wi-Fi, 5 GHz; the DHCP address can change |
 | OS | Debian 13 (trixie), 64-bit |
 | Container runtime | Docker Engine 29.8.2 with Compose v5.6.0, from Docker's apt repository |
 | Install method | Home Assistant Container, image pinned to `2026.9.4` |
-| Web UI | `http://192.168.0.17:8123` |
+| Web UI | `http://pi-faye.local:8123` |
 
 Home Assistant Container shares the Pi with other services. Home Assistant OS would replace the whole operating system, so it is not used.
 
@@ -61,7 +61,7 @@ Before buying more bulbs or relying on a model, check that its box says Wi-Fi. S
 - [x] Pi reachable over SSH with key login
 - [x] USB controller working and external drive reformatted
 - [x] Docker Engine and Compose installed
-- [ ] Reserve `192.168.0.17` for the Pi in the router's DHCP settings
+- [x] Move the Pi to Wi-Fi only and address it as `pi-faye.local` everywhere (SSH, the web UI and the ha-mcp URL in Claude Code)
 - [x] Copy the compose file to the Pi and start the container
 - [x] Create the Home Assistant user through the web UI
 - [x] Pair the bulbs in Smart Life and add the Tuya integration
@@ -74,17 +74,17 @@ Before buying more bulbs or relying on a model, check that its box says Wi-Fi. S
 - [x] Samsung TV (QN55Q60D, `192.168.0.16`, MAC `c8:a6:ef:15:a9:21`) in party mode: `script.living_room_party_tv` wakes it with the Wake on LAN button (the Samsung integration's own turn_on does not wake it), casts the Groove Never Dies mix (`HR7y3f18Ug8`) through the TV's built-in Google Cast via `script.living_room_tv_cast_mix`, retries once, unmutes, and sets the volume to 20%. The first cast after YouTube was closed fails with a lounge `screen_ids` error that `continue_on_error` cannot catch, so the cast runs in its own script started with `script.turn_on`. Stopping closes the cast app with `media_player.turn_off`, because `media_stop` only pauses YouTube
 - [ ] Run the full party from a TV in standby once, to prove the wake, failed first cast and retry happen in one run
 - [ ] Mount the `storage` drive and schedule backups to it
-- [ ] Boot the Pi without the desktop and close port 111 (`rpcbind`)
+- [x] Boot the Pi to console (`multi-user.target`), disable `rpcbind` and `nfs-blkmap` (port 111), set the Wi-Fi country to `BR`
 
 ## Deploy
 
 ```bash
-ssh samsepiol@192.168.0.17 'sudo mkdir -p /opt/homeassistant/config && sudo chown -R samsepiol:samsepiol /opt/homeassistant'
-scp home-assistant/docker-compose.yml samsepiol@192.168.0.17:/opt/homeassistant/docker-compose.yml
-ssh samsepiol@192.168.0.17 'cd /opt/homeassistant && docker compose up -d'
+ssh samsepiol@pi-faye.local 'sudo mkdir -p /opt/homeassistant/config && sudo chown -R samsepiol:samsepiol /opt/homeassistant'
+scp home-assistant/docker-compose.yml samsepiol@pi-faye.local:/opt/homeassistant/docker-compose.yml
+ssh samsepiol@pi-faye.local 'cd /opt/homeassistant && docker compose up -d'
 ```
 
-Open `http://192.168.0.17:8123` and create the first user.
+Open `http://pi-faye.local:8123` and create the first user.
 
 ## Upgrade
 

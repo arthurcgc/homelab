@@ -3,6 +3,7 @@ services:
     container_name: homeassistant
     image: ghcr.io/home-assistant/home-assistant:2026.9.4
     restart: unless-stopped
+    stop_grace_period: 2m
     network_mode: host
     environment:
       - TZ=America/Sao_Paulo
