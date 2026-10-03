@@ -15,6 +15,7 @@ Reachable on LAN at `http://pichau` (nginx reverse proxy on port 80). Landing pa
 | [whisper.cpp](#whispercpp--speech-to-text) | — | 9100 | `voice/whisper/` |
 | [Kokoro](#kokoro--text-to-speech) | — | 9101 | `voice/kokoro/` |
 | [Paperless-ngx](#paperless-ngx) | `/paperless/` | 8000 | `paperless/` |
+| [Home Assistant](#home-assistant) | — | 8123 | `home-assistant/` |
 
 ## Nginx
 
@@ -133,6 +134,19 @@ cd paperless && docker compose up -d
 # Create admin user on first run:
 docker exec -it paperless python3 manage.py createsuperuser
 # Open http://pichau.local:8000
+```
+
+## Home Assistant
+
+Home automation for the house lights (Avant and Ekaza Wi-Fi bulbs through the Tuya integration). It runs on the Raspberry Pi (`pi-faye`, `192.168.0.17`), not on pichau. See `home-assistant/PLAN.md` for the full plan.
+
+- **Image:** `ghcr.io/home-assistant/home-assistant:2026.9.4` (upstream)
+- **Port:** 8123 (`network_mode: host`)
+- **Config:** `/opt/homeassistant/config` on the Pi (not in this repo)
+
+```bash
+ssh samsepiol@192.168.0.17 'cd /opt/homeassistant && docker compose up -d'
+# Open http://192.168.0.17:8123
 ```
 
 ## Quick Reference
