@@ -71,7 +71,7 @@ Party mode is `input_boolean.living_room_party`. It always starts off after a Ho
 
 - `script.living_room_party_wave` rolls a color wave across the living room bulbs.
 - `script.living_room_party_tv` wakes the TV with Wake on LAN, plays a random video from the **Party Videos** to-do list through `yt-remote` (below) in the TV's signed-in Premium profile, and sets the volume to 55%, tuned for the JBL Xtreme 2 speaker connected to the TV over Bluetooth.
-- Turning the toggle off closes YouTube on the TV and restores the lights: each bulb goes back on or off as it was before the party, and the ones that are on return to the default warm yellow (2700 K, full brightness), even if the snapshot was taken while they still had party colors. The restore takes about 3 seconds; switching the party back on during it queues the new wave, which starts as soon as the restore ends.
+- Turning the toggle off leaves the TV alone, so YouTube keeps playing, and restores the lights: each bulb goes back on or off as it was before the party, and the ones that are on return to the default warm yellow (2700 K, full brightness), even if the snapshot was taken while they still had party colors. The restore takes about 3 seconds; switching the party back on during it queues the new wave, which starts as soon as the restore ends.
 - An automation turns the party off after 2 hours.
 - **The video list** is the local to-do list **Party Videos** (`todo.party_videos`), so it can be edited from Home Assistant's To-do page on any device. Each item's title is a YouTube video or playlist URL, and its description can hold the name. Every party plays one open item at random; ticking an item off takes it out of rotation without deleting it. With no open items, party mode plays the Groove Never Dies mix (`HR7y3f18Ug8`).
 - The wave keeps going when a bulb drops off Wi-Fi, because each bulb command skips errors. If the wave stops for any other reason while the party is on (an error, or a script reload, which aborts running scripts), the wave watchdog automation restarts it after 5 seconds in resume mode. Resume mode keeps the original snapshot, so stopping the party still restores the lights from before it.
@@ -91,7 +91,7 @@ Casting from Home Assistant always plays as an anonymous viewer, so YouTube Prem
 | `POST /pause` | Pauses playback |
 | `GET /status` | Pairing, connection, and what is playing |
 
-Home Assistant calls it through `rest_command.yt_remote_play` and `rest_command.yt_remote_stop` in `configuration.yaml`.
+Home Assistant calls it through `rest_command.yt_remote_play`, `rest_command.yt_remote_pause` and `rest_command.yt_remote_stop` in `configuration.yaml`. Party mode only uses `yt_remote_play`; the other two are available for manual use.
 
 How it reaches the TV:
 
