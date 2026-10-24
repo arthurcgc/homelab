@@ -8,10 +8,30 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./index.html:/usr/share/nginx/html/index.html:ro
+      - ./radar/local:/etc/nginx/radar:ro
     depends_on:
       - glance
       - glances
       - quartz
+    networks:
+      - homelab
+
+  radar-metrics:
+    image: quay.io/prometheuscommunity/prom-label-proxy:v0.15.1@sha256:186f9fe791158ef25d6f810109746ac0acdb35cb8401b554526c77c065483373
+    container_name: radar-metrics
+    restart: unless-stopped
+    command:
+      - -insecure-listen-address=0.0.0.0:8080
+      - -upstream=${RADAR_PROMETHEUS_UPSTREAM:?Set RADAR_PROMETHEUS_UPSTREAM in mac/.env}
+      - -rewrite-host-header-to=${RADAR_PROMETHEUS_HOST:?Set RADAR_PROMETHEUS_HOST in mac/.env}
+      - -label=cluster
+      - -header-name=X-Radar-Cluster
+      - -enable-label-apis
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
     networks:
       - homelab
 

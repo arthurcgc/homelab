@@ -16,6 +16,7 @@ Reachable on LAN at `http://pichau` (nginx reverse proxy on port 80). Landing pa
 | [Kokoro](#kokoro--text-to-speech) | — | 9101 | `voice/kokoro/` |
 | [Paperless-ngx](#paperless-ngx) | `/paperless/` | 8000 | `paperless/` |
 | [Home Assistant](#home-assistant) | — | 8123 | `home-assistant/` |
+| [Radar (Mac)](#radar-mac) | `/radar/` | 9280 | `mac/radar/` |
 
 ## Nginx
 
@@ -30,6 +31,50 @@ Reverse proxy and landing page. Routes all services under a single port (80) wit
 cd nginx && docker compose up -d
 # Open http://pichau
 ```
+
+## Radar (Mac)
+
+Kubernetes dashboard and read-only MCP context for coding agents. Runs natively on the Mac through a per-user launchd service, using the host's kubeconfig and AWS SSO.
+
+- **UI:** http://localhost/radar/ through the Mac nginx proxy.
+- **Backend:** Homebrew `kubectl-radar`, bound to `127.0.0.1:9280` with `--base-path=/radar`.
+- **Service definition:** `mac/radar/com.arthur.radar.plist`.
+- **History:** `~/.radar/timeline.db`, seven-day retention, 1 GiB cap. Records only while running and connected to the selected cluster.
+- **Logs:** `~/Library/Logs/radar.log` and `radar-error.log`.
+- **MCP:** http://127.0.0.1:9280/radar/mcp-readonly. Configure `radar` once in `~/.claude.json`, then run `mcp-sync.py` to update Pi and Codex.
+- **Permissions:** the MCP endpoint exposes only read tools; the UI retains the kubeconfig identity's write permissions.
+- **Investigation agent:** `mac/radar/codex-fast`, installed to `~/.radar/bin/codex-fast` and selected through `RADAR_AI_CLI_BIN`. Adds `service_tier="priority"` to Codex invocations and forwards Radar's arguments unchanged, including safeguards. Model and reasoning effort remain selectable in Radar; use `gpt-6.1-sol` with medium effort. Authentication uses the existing Codex login.
+
+```bash
+bash mac/radar/install.sh
+docker exec nginx nginx -t
+docker exec nginx nginx -s reload
+# Open http://localhost/radar/
+```
+
+The installer renders the launchd template with the current home directory and restarts Radar. The existing SQLite database is preserved. Radar starts at login without opening a browser. This service belongs to the Mac setup, not the Linux host's Compose stack.
+
+### Radar metrics proxy
+
+The Mac Compose stack runs upstream [prom-label-proxy](https://github.com/prometheus-community/prom-label-proxy) v0.15.1, pinned by image digest. nginx selects a cluster from the URL and overwrites `X-Radar-Cluster`; the proxy injects that label into every PromQL selector and scopes supported metadata requests. The proxy is internal to the Docker network and has no published port.
+
+Backend addresses and cluster names stay in ignored local files:
+
+- `mac/.env`: `RADAR_PROMETHEUS_UPSTREAM` is the full Grafana Prometheus datasource proxy URL; `RADAR_PROMETHEUS_HOST` is its hostname without a scheme or path. Copy the fields from `mac/.env.example` into the existing `.env`, or copy the example for a fresh setup.
+- `mac/radar/local/metrics-clusters.conf`: nginx map entries mapping each URL context slug to its exact Prometheus `cluster` label. Copy `mac/radar/metrics-clusters.conf.example` and replace its example context slugs and cluster names.
+
+For example, the `cluster-a` entry makes `http://127.0.0.1/radar-metrics/cluster-a` a cluster-scoped Prometheus URL. Save the matching URL under that context's Radar Metrics connection. Requests require an `Authorization: Bearer <Grafana service-account token>` header; nginx and prom-label-proxy forward it to the configured datasource proxy. Keep credentials in local Radar settings or environment-backed header references, not this repo. Unknown context paths return 404. Switching Radar contexts must select that context's saved URL; do not set one global Prometheus URL.
+
+```bash
+mkdir -p mac/radar/local
+cp mac/radar/metrics-clusters.conf.example mac/radar/local/metrics-clusters.conf
+# Edit the local cluster map and mac/.env before starting the services.
+cd mac
+docker compose up -d --no-deps radar-metrics nginx
+docker exec nginx nginx -t
+```
+
+Only endpoints supported by prom-label-proxy are forwarded. This does not add collection or change cluster telemetry.
 
 ## Glance
 

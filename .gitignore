@@ -5,3 +5,4 @@
 
 # Runtime
 *.log
+/mac/radar/local/

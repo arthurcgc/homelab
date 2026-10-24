@@ -1,0 +1,2 @@
+~^/radar-metrics/cluster-a/ example-prod-cluster;
+~^/radar-metrics/cluster-b/ example-staging-cluster;
