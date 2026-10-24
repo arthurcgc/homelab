@@ -106,3 +106,17 @@ Deploy a change:
 scp -r home-assistant/yt-remote samsepiol@pi-faye.local:/opt/homeassistant/
 ssh samsepiol@pi-faye.local 'cd /opt/homeassistant && docker compose up -d --build yt-remote'
 ```
+
+## IP reconciler
+
+The router hands out new addresses after it restarts, and tuya-local only knows each bulb by a fixed IP. `reconcile/reconcile.sh` runs hourly from `/etc/cron.d/ha-reconcile` on the Pi and logs to `/opt/homeassistant/reconcile.log`.
+
+- `reconcile.py` runs inside the Home Assistant container. It listens for Tuya broadcasts to map each device ID to its current IP, updates the host of any tuya-local entry that moved through the entry's options flow, and reloads it so an entry stuck in `setup_retry` reconnects at once.
+- `reconcile.sh` finds the TV by its MAC address and, when it moved, rewrites `TV_HOST` in `/opt/homeassistant/.env` and restarts `yt-remote`. The Samsung integration rediscovers the TV by itself.
+
+Deploy a change:
+
+```bash
+scp home-assistant/reconcile/reconcile.sh samsepiol@pi-faye.local:/opt/homeassistant/
+scp home-assistant/reconcile/reconcile.py samsepiol@pi-faye.local:/tmp/ && ssh samsepiol@pi-faye.local 'sudo mv /tmp/reconcile.py /opt/homeassistant/config/reconcile/'
+```
