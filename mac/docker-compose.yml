@@ -36,7 +36,7 @@ services:
       - homelab
 
   glance:
-    image: glanceapp/glance:v0.8.6
+    image: glanceapp/glance:v0.8.7
     container_name: glance
     restart: unless-stopped
     volumes:
